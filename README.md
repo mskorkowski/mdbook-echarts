@@ -22,11 +22,10 @@ src = "src"
 create-missing = false
 
 #use as mdbook preprocessor
-[preprocessor.chart]
+[preprocessor.echarts]
 
 [output.html]
-additional-js = ["assets/d3/d3.min.js", "assets/c3/c3.min.js"]
-additional-css = ["assets/c3/c3.min.css"]
+additional-js = ["assets/echarts.min.js"]
 
 [output.html.fold]
 enable = true
@@ -37,46 +36,48 @@ level = 0
 ### 2. edit your markdown file
 ````text
 
-```chart
+```echarts
 {
-    "data": {
-        "type": "bar",
-        "columns": [
-            ["data1", 30, 200, 100, 400, 150, 250],
-            ["data2", 50, 20, 10, 40, 15, 25]
-        ],
-        "axes": {
-            "data2": "y2"
-        }
+  xAxis: {
+    data: ['A', 'B', 'C', 'D', 'E']
+  },
+  yAxis: {},
+  series: [
+    {
+      data: [10, 22, 28, 43, 49],
+      type: 'bar',
+      stack: 'x'
     },
-    "axis": {
-        "y2": {
-            "show": true
-        }
+    {
+      data: [5, 4, 3, 5, 10],
+      type: 'bar',
+      stack: 'x'
     }
-}
+  ]
+};
 ```
 
 or 
 
-{% chart %}
+{% echarts %}
 {
-    "data": {
-        "type": "foo",
-        "columns": [
-            ["data1", 30, 200, 100, 400, 150, 250],
-        ["data2", 50, 20, 10, 40, 15, 25]
-        ],
-        "axes": {
-            "data2": "y2"
-        }
+  xAxis: {
+    data: ['A', 'B', 'C', 'D', 'E']
+  },
+  yAxis: {},
+  series: [
+    {
+      data: [10, 22, 28, 43, 49],
+      type: 'bar',
+      stack: 'x'
     },
-    "axis": {
-        "y2": {
-            "show": true
-        }
+    {
+      data: [5, 4, 3, 5, 10],
+      type: 'bar',
+      stack: 'x'
     }
-}
+  ]
+};
 {% endchart %}
 
 ````
@@ -93,5 +94,5 @@ mdbook build
 this will do something to make sure your chart show as you wish.
 
 
-![demo](20210130175509.png)
+![demo](./demo.png)
 
