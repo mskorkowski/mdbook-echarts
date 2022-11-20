@@ -34,7 +34,7 @@ impl Chart {
 
 impl Preprocessor for Chart {
     fn name(&self) -> &str {
-        "chart"
+        "echarts"
     }
 
     fn run(&self, ctx: &PreprocessorContext, mut book: Book) -> Result<Book, Error> {
@@ -64,10 +64,10 @@ impl Preprocessor for Chart {
 pub fn gen(content: &str) -> String {
     let mut s = String::from(content);
 
-    const TAG_START_1: &str = "```chart";
+    const TAG_START_1: &str = "```echarts";
     const TAG_END_1: &str = "```";
     // let re = Regex::new(r"(?m)^```chart((.*\n)+?)?```$").unwrap();
-    let re = Regex::new(r"```chart((.*\n)+?)?```").unwrap();
+    let re = Regex::new(r"```echarts((.*\n)+?)?```").unwrap();
 
     for mat in re.find_iter(s.clone().as_str()) {
 
@@ -77,11 +77,11 @@ pub fn gen(content: &str) -> String {
         s = s.replace(mat_str, buf.as_str());
     }
 
-    const TAG_START_2: &str = "{% chart %}";
-    const TAG_END_2: &str = "{% endchart %}";
+    const TAG_START_2: &str = "{% echarts %}";
+    const TAG_END_2: &str = "{% endecharts %}";
 
     // let re = Regex::new(r"(?m)^\{% chart %}((.*\n)+?)?\{% endchart %}$").unwrap();
-    let re = Regex::new(r"\{% chart %}((.*\n)+?)?\{% endchart %}").unwrap();
+    let re = Regex::new(r"\{% echarts %}((.*\n)+?)?\{% endecharts %}").unwrap();
     for mat in re.find_iter(s.clone().as_str()) {
         let mat_str = mat.as_str();
         let empty_str_vec = vec![TAG_START_2, TAG_END_2];
@@ -98,17 +98,13 @@ fn gen_html(mat_str: &str, empty_str_vec: Vec<&str>) -> String {
         mat_string = mat_string.replace(s, "");
     }
 
-    let link = r###"
-<link rel="stylesheet" href="/assets/c3/c3.min.css">
-<script src="/assets/d3/d3.min.js"></script>
-<script src="/assets/c3/c3.min.js"></script>
-"###;
-    let id = format!("chart-{}", Uuid::new_v4());
-    let div = format!("<div id=\"{}\"></div>", id);
-    let bindto = "\n{\"bindto\":\"#".to_string() + id.to_string().as_str() + "\",";
-    let mat_string = mat_string.replace("\n{", bindto.as_str());
-    let script = format!("<script>\nc3.generate({});\n</script>", mat_string);
-    let buf = format!("<div>\n{}\n{}\n{}\n</div>", div, link, script);
+    let v = String::from(format!("chart_{}", Uuid::new_v4()));
+    let ids = v.split_at(14);
+    let id = ids.0;
+    let div = format!("<div id=\"{}\" style=\"width: 600px;height:400px;\"></div>", id);
+    let echarts_src = format!("document.addEventListener('DOMContentLoaded', function() {{\nvar my{} = echarts.init(document.getElementById('{}'));\nvar option = {}\nmy{}.setOption(option);\n}})", id, id, mat_string.trim(), id);
+    let script = format!("<script>\n{};\n</script>", echarts_src);
+    let buf = format!("<div>\n{}\n{}\n</div>", div, script);
     return buf;
 }
 

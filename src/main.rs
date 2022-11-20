@@ -33,7 +33,7 @@ fn main() {
     if let Some(sub_args) = matches.subcommand_matches("supports") {
         handle_supports(&preprocessor, sub_args);
     } else if let Some(_sub_args) = matches.subcommand_matches("help") {
-        println!("please use mdbook-chart as a preprocessor in your book.toml");
+        println!("please use mdbook-echarts as a preprocessor in your book.toml");
     } else if let Err(e) = handle_preprocessing(&preprocessor) {
         eprintln!("{}", e);
         process::exit(1);
