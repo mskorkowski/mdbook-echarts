@@ -4,7 +4,7 @@ A preprocessor and cli tool for mdbook to show chart use C3.js.
 #### install
 
 ```bash
-cargo install mdbook-chart
+cargo install mdbook-echarts
 ```
 
 #### 1. Use as mdbook preprocessor.
