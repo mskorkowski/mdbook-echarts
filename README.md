@@ -1,5 +1,5 @@
-# mdbook-chart
-A preprocessor and cli tool for mdbook to show chart use C3.js.
+# mdbook-echarts
+A preprocessor and cli tool for mdbook to show chart use [Apache Echarts](https://echarts.apache.org/).
 
 #### install
 
