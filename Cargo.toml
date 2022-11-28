@@ -1,6 +1,6 @@
 [package]
 name = "mdbook-echarts"
-version = "0.0.3"
+version = "0.0.4"
 authors = ["Zhuang Biaowei"]
 edition = "2018"
 description = "A preprocessor and cli tool for mdbook to show chart use echarts.js."
@@ -15,6 +15,7 @@ keywords = ["mdbook", "markdown", "chart", "Echarts"]
 
 [dependencies]
 clap = "2.33.1"
+tungstenite = "0.17.2"
 mdbook = "0.4.6"
 anyhow = "1.0.32"
 serde = "1.0.114"
