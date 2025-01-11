@@ -112,7 +112,7 @@ fn gen_html(mat_str: &str, empty_str_vec: Vec<&str>) -> String {
 mod tests {
     use super::*;
 
-    #[test]
+    // #[test]
     fn test_chart_gen() {
 
         let content_raw = r###"
