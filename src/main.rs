@@ -1,14 +1,12 @@
 mod chart;
 
 use std::io;
+use std::path::PathBuf;
 use std::process;
 
-use clap::Arg;
 use clap::ArgMatches;
 use clap::arg;
-use clap::command;
 use clap::value_parser;
-use clap::ArgAction;
 use clap::Command;
 
 use mdbook::errors::Error;
@@ -17,18 +15,20 @@ use mdbook::preprocess::{CmdPreprocessor, Preprocessor};
 use chart::Chart;
 
 
-pub fn make_app() -> Command<'static, 'static> {
+pub fn make_app() -> Command {
     Command::new("chart-preprocessor")
         .about("A mdbook preprocessor to auto generate book summary")
         .subcommand(
-            SubCommand::with_name("supports")
-                .arg(Arg::with_name("renderer").required(true))
+            Command::new("supports")
+                .arg(
+                    arg!(<renderer>).required(true).value_parser(value_parser!(PathBuf))
+                )
                 .about("Check whether a renderer is supported by this preprocessor"),
         )
-        .subcommand(
-            SubCommand::with_name("help")
-                .about("help doc for use mdbook-chart preprocessor"),
-        )
+        // .subcommand(
+        //     Command::new("help")
+        //         .about("help doc for use mdbook-chart preprocessor"),
+        // )
 }
 
 fn main() {
@@ -66,8 +66,9 @@ fn handle_preprocessing(pre: &dyn Preprocessor) -> Result<(), Error> {
 }
 
 fn handle_supports(pre: &dyn Preprocessor, sub_args: &ArgMatches) -> ! {
-    let renderer = sub_args.value_of("renderer").expect("Required argument");
-    let supported = pre.supports_renderer(&renderer);
+    let renderer: &PathBuf = sub_args.get_one("renderer").expect("Required argument");
+    let renderer = renderer.to_str().unwrap_or("not-supported");
+    let supported = pre.supports_renderer(renderer);
 
     if supported {
         process::exit(0);

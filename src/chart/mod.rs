@@ -9,20 +9,20 @@ use mdbook::book::BookItem;
 use mdbook::errors::Error;
 use mdbook::preprocess::{Preprocessor, PreprocessorContext};
 
-#[derive(Debug)]
-pub struct MdFile {
-    pub name: String,
-    pub path: String,
-}
+// #[derive(Debug)]
+// pub struct MdFile {
+//     pub name: String,
+//     pub path: String,
+// }
 
-#[derive(Debug)]
-pub struct MdGroup {
-    pub name: String,
-    pub path: String,
-    pub has_readme: bool,
-    pub group_list: Vec<MdGroup>,
-    pub md_list: Vec<MdFile>,
-}
+// #[derive(Debug)]
+// pub struct MdGroup {
+//     pub name: String,
+//     pub path: String,
+//     pub has_readme: bool,
+//     pub group_list: Vec<MdGroup>,
+//     pub md_list: Vec<MdFile>,
+// }
 
 pub struct Chart;
 
@@ -89,7 +89,7 @@ pub fn gen(content: &str) -> String {
         s = s.replace(mat_str, buf.as_str());
     }
 
-    return s;
+    s
 }
 
 fn gen_html(mat_str: &str, empty_str_vec: Vec<&str>) -> String {
@@ -105,7 +105,7 @@ fn gen_html(mat_str: &str, empty_str_vec: Vec<&str>) -> String {
     let echarts_src = format!("document.addEventListener('DOMContentLoaded', function() {{\nvar my{} = echarts.init(document.getElementById('{}'));\nvar option = {}\nmy{}.setOption(option);\n}})", id, id, mat_string.trim(), id);
     let script = format!("<script>\n{};\n</script>", echarts_src);
     let buf = format!("<div>\n{}\n{}\n</div>", div, script);
-    return buf;
+    buf
 }
 
 #[cfg(test)]
