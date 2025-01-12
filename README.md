@@ -1,7 +1,7 @@
 # mdbook-echarts
 A preprocessor and cli tool for mdbook to show chart use [Apache Echarts](https://echarts.apache.org/).
 
-> This repo is in the works-for-me state and I use it inside my nixos configuration to have echarts inside an mdbook.
+> This repo is in the works-for-me state and I use it inside my nixos configuration to have echarts inside a mdbook.
 > The changes are related to bumping the dependencies up and doing some minor updates to the code requied for the package
 > to be built (+ commented out tests).
 >
