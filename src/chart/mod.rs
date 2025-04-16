@@ -100,7 +100,7 @@ fn gen_html(mat_str: &str, empty_str_vec: Vec<&str>) -> String {
     let ids = v.split_at(14);
     let id = ids.0;
     let div = format!("<div id=\"{}\" style=\"width: 100%;padding-top: 75%;\"></div>", id);
-    let echarts_src = format!("document.addEventListener('DOMContentLoaded', function() {{\nvar node = document.getElementById('{}');\nvar iniHeight = node.offsetHeight;\nvar iniWidth = node.offsetWidth;\nvar initialResizeTriggered = false;\nvar my{} = echarts.init(node);\nvar option = {};\nmy{}.setOption(option);\nfunction resizeChart(){{\nif (!initialResizeTriggered) {{\ninitialResizeTriggered = true; \nif (\nel.offsetWidth === iniHeight && \nel.offsetHeight === iniWidth\n){{ \nreturn;\n}} else {{my.resize();}}\n}} }};\nnew ResizeObserver(resizeChart).observe(el);\n}} )", id, id, mat_string.trim(), id);
+    let echarts_src = format!("document.addEventListener('DOMContentLoaded', function() {{\nvar node = document.getElementById('{}');\nvar iniHeight = node.offsetHeight;\nvar iniWidth = node.offsetWidth;\nvar initialResizeTriggered = false;\nvar my{} = echarts.init(node);\nvar option = {};\nmy{}.setOption(option);\nfunction resizeChart(){{\nif (!initialResizeTriggered) {{\ninitialResizeTriggered = true; \nif (\nnode.offsetWidth === iniHeight && \nnode.offsetHeight === iniWidth\n){{ \nreturn;\n}} else {{my{}.resize();}}\n}} }};\nnew ResizeObserver(resizeChart).observe(node);\n}} )", id, id, mat_string.trim(), id, id);
     let script = format!("<script>\n{};\n</script>", echarts_src);
     let buf = format!("<div>\n{}\n{}\n</div>", div, script);
     buf
