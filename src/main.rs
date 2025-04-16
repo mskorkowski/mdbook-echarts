@@ -45,7 +45,7 @@ fn main() {
     } else if let Some(_sub_args) = matches.subcommand_matches("help") {
         println!("please use mdbook-echarts as a preprocessor in your book.toml");
     } else if let Some(..) = matches.subcommand_matches("version") {
-        println!("0.0.6-mskorkowski")
+        println!("0.0.7-mskorkowski")
     } else if let Err(e) = handle_preprocessing(&preprocessor) {
         eprintln!("{}", e);
         process::exit(1);

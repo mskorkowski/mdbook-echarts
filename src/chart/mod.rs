@@ -68,14 +68,14 @@ pub fn gen(content: &str) -> String {
     const TAG_END_1: &str = "```";
     // let re = Regex::new(r"(?m)^```chart((.*\n)+?)?```$").unwrap();
     let re = Regex::new(r"```echarts((.*\n)+?)?```").unwrap();
-
     for mat in re.find_iter(s.clone().as_str()) {
-
         let mat_str = mat.as_str();
         let empty_str_vec = vec![TAG_START_1, TAG_END_1];
         let buf = gen_html(mat_str, empty_str_vec);
         s = s.replace(mat_str, buf.as_str());
     }
+
+    println!("updated s: {}", s);
 
     const TAG_START_2: &str = "{% echarts %}";
     const TAG_END_2: &str = "{% endecharts %}";
@@ -102,7 +102,8 @@ fn gen_html(mat_str: &str, empty_str_vec: Vec<&str>) -> String {
     let ids = v.split_at(14);
     let id = ids.0;
     let div = format!("<div id=\"{}\" style=\"width: 100%;padding-top: 75%;\"></div>", id);
-    let echarts_src = format!("document.addEventListener('DOMContentLoaded', function() {{\nvar node = document.getElementById('{}');\nvar iniHeight = node.offsetHeight;\nvar iniWidth = node.offsetWidth;\nvar initialResizeTriggered = false;\nvar my{} = echarts.init(node);\nvar option = {}\n;my{}.setOption(option);\n\nfunction resizeChart(){{\nif (!initialResizeTriggered) {{\ninitialResizeTriggered = true; \nif (\n el.offsetWidth === iniHeight && \nel.offsetHeight === iniWidth\n) {{ \nreturn;\n}} else {{my.resize();}}\n}};\nnew ResizeObserver(resizeChart).observe(el);\n}})", id, id, mat_string.trim(), id);
+    let echarts_src = format!("document.addEventListener('DOMContentLoaded', function() {{\nvar node = document.getElementById('{}');\nvar iniHeight = node.offsetHeight;\nvar iniWidth = node.offsetWidth;\nvar initialResizeTriggered = false;\nvar my{} = echarts.init(node);\nvar option = {};\nmy{}.setOption(option);\nfunction resizeChart(){{\nif (!initialResizeTriggered) {{\ninitialResizeTriggered = true; \nif (\nel.offsetWidth === iniHeight && \nel.offsetHeight === iniWidth\n){{ \nreturn;\n}} else {{my.resize();}}\n}};\nnew ResizeObserver(resizeChart).observe(el);\n}})", id, id, mat_string.trim(), id);
+
     let script = format!("<script>\n{};\n</script>", echarts_src);
     let buf = format!("<div>\n{}\n{}\n</div>", div, script);
     buf
@@ -116,7 +117,7 @@ mod tests {
     fn test_chart_gen() {
 
         let content_raw = r###"
-```chart
+```echarts
 {
     "data": {
     "type": "bar",
@@ -136,7 +137,7 @@ mod tests {
 }
 ```
 
-```chart
+```echarts
 {
     "data": {
         "type": "bar",
@@ -156,7 +157,7 @@ mod tests {
 }
 ```
 
-{% chart %}
+{% echarts %}
 {
     "data": {
         "type": "bar",
@@ -174,9 +175,9 @@ mod tests {
         }
     }
 }
-{% endchart %}
+{% endecharts %}
 
-{% chart %}
+{% echarts %}
 {
     "data": {
         "type": "bar",
@@ -194,7 +195,7 @@ mod tests {
         }
     }
 }
-{% endchart %}
+{% endecharts %}
         "###;
 
         let content_html_target = r###"
@@ -319,15 +320,15 @@ c3.generate(
 </div>
         "###;
         let content_html = gen(content_raw);
-        println!("content_html: {}", content_html);
+        // println!("content_html: {}", content_html);
 
         let re = Regex::new(r"chart-.{36}").unwrap();
 
         let after_content_html = re.replace_all(content_html.as_str(), "chart-");
-        println!("after_content_html: {}", after_content_html);
+        // println!("after_content_html: {}", after_content_html);
 
         let after_content_html_target = re.replace_all(content_html_target, "chart-");
-        println!("after_content_html_target: {}", after_content_html_target);
+        // println!("after_content_html_target: {}", after_content_html_target);
 
         assert_eq!(after_content_html_target, after_content_html)
     }
