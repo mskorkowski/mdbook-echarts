@@ -25,6 +25,10 @@ pub fn make_app() -> Command {
                 )
                 .about("Check whether a renderer is supported by this preprocessor"),
         )
+        .subcommand(
+            Command::new("version")
+                .about("Print the version of this preprocessor"),
+        )
         // .subcommand(
         //     Command::new("help")
         //         .about("help doc for use mdbook-chart preprocessor"),
