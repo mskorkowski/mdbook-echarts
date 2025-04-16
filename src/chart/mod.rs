@@ -75,8 +75,6 @@ pub fn gen(content: &str) -> String {
         s = s.replace(mat_str, buf.as_str());
     }
 
-    println!("updated s: {}", s);
-
     const TAG_START_2: &str = "{% echarts %}";
     const TAG_END_2: &str = "{% endecharts %}";
 
@@ -103,7 +101,6 @@ fn gen_html(mat_str: &str, empty_str_vec: Vec<&str>) -> String {
     let id = ids.0;
     let div = format!("<div id=\"{}\" style=\"width: 100%;padding-top: 75%;\"></div>", id);
     let echarts_src = format!("document.addEventListener('DOMContentLoaded', function() {{\nvar node = document.getElementById('{}');\nvar iniHeight = node.offsetHeight;\nvar iniWidth = node.offsetWidth;\nvar initialResizeTriggered = false;\nvar my{} = echarts.init(node);\nvar option = {};\nmy{}.setOption(option);\nfunction resizeChart(){{\nif (!initialResizeTriggered) {{\ninitialResizeTriggered = true; \nif (\nel.offsetWidth === iniHeight && \nel.offsetHeight === iniWidth\n){{ \nreturn;\n}} else {{my.resize();}}\n}};\nnew ResizeObserver(resizeChart).observe(el);\n}})", id, id, mat_string.trim(), id);
-
     let script = format!("<script>\n{};\n</script>", echarts_src);
     let buf = format!("<div>\n{}\n{}\n</div>", div, script);
     buf
