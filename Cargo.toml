@@ -1,6 +1,6 @@
 [package]
 name = "mdbook-echarts"
-version = "0.0.5"
+version = "0.0.6"
 authors = ["Zhuang Biaowei"]
 edition = "2021"
 description = "A preprocessor and cli tool for mdbook to show chart use echarts.js."
