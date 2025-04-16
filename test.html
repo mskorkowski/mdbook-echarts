@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+  </head>
+  <body>
+    <!-- element allowing resize -->
+    <div id="chart" style="width: 100vw; height: calc(100vw*0.75);"></div>
+    <script>
+
+      const el = document.getElementById("chart");
+      const chart = echarts.init(el);
+      const iniHeight = el.offsetHeight
+      const iniWidth = el.offsetWidth
+      let initialResizeTriggered = false;
+
+      function resizeChart(){
+        if (!initialResizeTriggered) {
+          initialResizeTriggered = true;
+          if (
+            el.offsetWidth === iniHeight &&
+            el.offsetHeight === iniWidth
+          ) { return;}
+        } else { chart.resize();}
+      };
+
+      let resizeObserver = new ResizeObserver(resizeChart).observe(el);
+
+      // example with animation (series line use animationDuration=1000 by default)
+      chart.setOption({
+        xAxis: {
+          type: "category",
+          data: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+        },
+        yAxis: {type: "value"},
+        series: [{
+          type: "line",
+          data: [150, 230, 224, 147, 260] 
+        }],
+        // animationDuration: 5000,
+      });
+
+    </script>
+  </body>
+</html>
